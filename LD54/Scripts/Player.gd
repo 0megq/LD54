@@ -1,8 +1,12 @@
 extends CharacterBody3D
 class_name Player
+signal edge_detected
 
-@export var run_speed: float = 20.0
 
+@export var max_speed: float = 5.0
+@export var acceleration: float = 100.0
+var run_direction: Vector3 = Vector3.RIGHT
+var speed: float
 
 # Jumping
 @export var jump_height: float
@@ -18,15 +22,37 @@ class_name Player
 
 
 func _physics_process(delta: float) -> void:
-	velocity.x = lerp(velocity.x, Input.get_axis("left", "right") * run_speed, 0.4)
+	$MeshInstance3D/RayCast3D.enabled = true
+	if $MeshInstance3D/RayCast3D.is_colliding():
+		edge_detected.emit()
+		$MeshInstance3D/RayCast3D.enabled = false
 	
-	velocity.z = 0
-	position.z = 4.6
+	var h_input = Input.get_axis("left", "right")
 	
+	$MeshInstance3D.scale.x = h_input if h_input != 0 else $MeshInstance3D.scale.x
+	
+	#Deacceleration
+	if h_input == 0 and abs(speed) > 0.1:
+		speed -= acceleration * delta * sign(speed)
+	
+	#Acceleration
+	speed += h_input * acceleration * delta
+	
+	#Max speed
+	speed = clamp(speed, -max_speed, max_speed)
+	
+	#Rotating speed
+	velocity.x = run_direction.x * speed
+	velocity.z = run_direction.z * speed
+	
+	
+	#Jumping and falling
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y += jump_velocity
 		
-	var gravity = fall_gravity if velocity.y < 0 else jump_gravity
-	velocity.y -= gravity * delta
+	if !is_on_floor():
+		var gravity = fall_gravity if velocity.y < 0 else jump_gravity
+		velocity.y -= gravity * delta
+	
 	
 	move_and_slide()
