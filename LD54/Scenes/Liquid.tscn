@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://sraj34la3jhg"]
+
+[ext_resource type="Script" path="res://Scripts/Liquid.gd" id="1_vj3eg"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_4kixp"]
+size = Vector3(11, 10, 11)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yh7kv"]
+albedo_color = Color(0.890196, 0.27451, 0.27451, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ig804"]
+size = Vector3(11, 10, 11)
+
+[node name="Liquid" type="Area3D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_vj3eg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_4kixp")
+surface_material_override/0 = SubResource("StandardMaterial3D_yh7kv")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_ig804")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -1,0 +1,75 @@
+[gd_scene load_steps=6 format=3 uid="uid://cjdgct24c3sh5"]
+
+[ext_resource type="PackedScene" uid="uid://c6b7lvyh48r7u" path="res://testlevel.glb" id="1_0mgg5"]
+[ext_resource type="PackedScene" uid="uid://bepjsqbqcn4uu" path="res://Scenes/Player.tscn" id="2_rifpo"]
+[ext_resource type="Script" path="res://Scripts/Camera.gd" id="3_v6hjv"]
+[ext_resource type="PackedScene" uid="uid://sraj34la3jhg" path="res://Scenes/Liquid.tscn" id="4_osial"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6dbit"]
+size = Vector3(25, 100, 0)
+
+[node name="Main" type="Node3D"]
+
+[node name="testlevel2" parent="." instance=ExtResource("1_0mgg5")]
+unique_name_in_owner = true
+
+[node name="Player" parent="." instance=ExtResource("2_rifpo")]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.666, 2.588, 4.63204)
+
+[node name="CameraBoundary" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, 0)
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CameraBoundary"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 8.8, 0, 8.8)
+shape = SubResource("BoxShape3D_6dbit")
+
+[node name="CameraBoundary2" type="Area3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 50, 0)
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CameraBoundary2"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 8.8, 0, 8.8)
+shape = SubResource("BoxShape3D_6dbit")
+
+[node name="CameraBoundary3" type="Area3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 50, 0)
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CameraBoundary3"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 8.8, 0, 8.8)
+shape = SubResource("BoxShape3D_6dbit")
+
+[node name="CameraBoundary4" type="Area3D" parent="."]
+transform = Transform3D(1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 0, 50, 0)
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CameraBoundary4"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 8.8, 0, 8.8)
+shape = SubResource("BoxShape3D_6dbit")
+
+[node name="Camera" type="Node3D" parent="."]
+script = ExtResource("3_v6hjv")
+
+[node name="Camera3D" type="Camera3D" parent="Camera"]
+transform = Transform3D(0.960255, 3.33067e-16, 0.279125, -0.026365, 0.995529, 0.0907017, -0.277877, -0.0944558, 0.955961, 5.59685, 7.28924, 16.1142)
+current = true
+fov = 69.0
+size = 14.4655
+
+[node name="Liquid" parent="." instance=ExtResource("4_osial")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -6.31389, 0)
+
+[connection signal="area_entered" from="CameraBoundary" to="Camera" method="_on_camera_boundary_area_entered"]
+[connection signal="area_entered" from="CameraBoundary2" to="Camera" method="_on_camera_boundary_area_entered"]
+[connection signal="area_entered" from="CameraBoundary3" to="Camera" method="_on_camera_boundary_area_entered"]
+[connection signal="area_entered" from="CameraBoundary4" to="Camera" method="_on_camera_boundary_area_entered"]
