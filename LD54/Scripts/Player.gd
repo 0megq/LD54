@@ -20,6 +20,12 @@ var speed: float
 @onready var jump_gravity: float =  (2 * jump_height) / (jump_duration * jump_duration)
 @onready var jump_velocity: float = (2 * jump_height) / jump_duration
 
+# Quality of life jumping behavior
+var can_jump: bool = true
+var coyote_time_length: float = 0.1
+var jump_was_pressed: bool = false
+var remember_jump_length: float = 0.1
+
 
 func _physics_process(delta: float) -> void:
 	$PlayerModel/RayCast3D.enabled = true
@@ -48,13 +54,41 @@ func _physics_process(delta: float) -> void:
 	velocity.z = run_direction.z * speed
 	
 	
-	#Jumping and falling
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y += jump_velocity
-		
+	#Jumping	
+	if is_on_floor():
+		can_jump = true
+		if jump_was_pressed:
+			jump()
+
+	if Input.is_action_just_pressed("jump"):
+		jump_was_pressed = true
+		remember_jump_time()
+		if can_jump:
+			jump()
+	
 	if !is_on_floor():
-		var gravity = fall_gravity if velocity.y < 0 else jump_gravity
-		velocity.y -= gravity * delta
-	
-	
+		coyote_time()
+		
+	apply_gravity(delta)
+		
 	move_and_slide()
+
+
+func remember_jump_time():
+	await get_tree().create_timer(remember_jump_length).timeout
+	jump_was_pressed = false
+
+
+func coyote_time() -> void:
+	await get_tree().create_timer(coyote_time_length).timeout
+	can_jump = false
+
+
+func jump() -> void:
+	velocity.y = jump_velocity
+
+	
+func apply_gravity(delta: float) -> void:
+	var gravity = fall_gravity if velocity.y < 0 else jump_gravity
+	velocity.y -= gravity * delta
+	velocity.y = max(velocity.y, -max_fall_speed)
