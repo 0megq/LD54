@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://y6m82jjdd0q6"]
 
 [ext_resource type="MeshLibrary" uid="uid://cwnmlhdhrsclr" path="res://GridMap/TileBase.tres" id="1_4c3rc"]
-[ext_resource type="Script" path="res://Scenes/GridMap.gd" id="2_l8ysi"]
+[ext_resource type="Script" path="res://Scripts/GridMap.gd" id="2_72pou"]
 
 [node name="GridMap" type="GridMap"]
 mesh_library = ExtResource("1_4c3rc")
@@ -9,6 +9,6 @@ cell_size = Vector3(1, 1, 1)
 cell_center_x = false
 cell_center_y = false
 cell_center_z = false
-script = ExtResource("2_l8ysi")
+script = ExtResource("2_72pou")
 size = 16.0
 metadata/_editor_floor_ = Vector3(0, 0, 7)

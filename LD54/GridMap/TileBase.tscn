@@ -1,20 +1,74 @@
-[gd_scene load_steps=4 format=3 uid="uid://dcbyp14r2e7wr"]
+[gd_scene load_steps=10 format=3 uid="uid://dcbyp14r2e7wr"]
+
+[ext_resource type="Texture2D" uid="uid://dw4gjaroawbks" path="res://Art/Stone.png" id="1_25k5k"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_srm25"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vffaj"]
-albedo_color = Color(0.470588, 0.254902, 0.054902, 1)
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_i7hon"]
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_p6li6"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_uwitd"]
+noise = SubResource("FastNoiseLite_i7hon")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4sjc2"]
+albedo_color = Color(0.6, 0.6, 0.6, 1)
+albedo_texture = ExtResource("1_25k5k")
+metallic = 1.0
+metallic_texture = SubResource("NoiseTexture2D_uwitd")
+ao_texture = ExtResource("1_25k5k")
+uv1_scale = Vector3(1.5, 1.5, 1.5)
+uv1_offset = Vector3(0.5, 0, 0)
+uv1_triplanar = true
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_m0i38"]
 points = PackedVector3Array(0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5)
+
+[sub_resource type="PrismMesh" id="PrismMesh_vt0j1"]
+left_to_right = 1.0
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_kcity"]
+points = PackedVector3Array(0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ojqmt"]
+albedo_color = Color(0.854902, 0.388235, 0.109804, 1)
+albedo_texture = ExtResource("1_25k5k")
+ao_texture = ExtResource("1_25k5k")
+uv1_triplanar = true
+uv1_triplanar_sharpness = 0.42045
 
 [node name="TileBase" type="Node3D"]
 
+[node name="TileStone" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_srm25")
+surface_material_override/0 = SubResource("StandardMaterial3D_4sjc2")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="TileStone"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TileStone/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_m0i38")
+
+[node name="TileSlantStone" type="MeshInstance3D" parent="."]
+mesh = SubResource("PrismMesh_vt0j1")
+surface_material_override/0 = SubResource("StandardMaterial3D_4sjc2")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="TileSlantStone"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TileSlantStone/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_kcity")
+
 [node name="TileDirt" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_srm25")
-surface_material_override/0 = SubResource("StandardMaterial3D_vffaj")
+surface_material_override/0 = SubResource("StandardMaterial3D_ojqmt")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="TileDirt"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TileDirt/StaticBody3D"]
-shape = SubResource("ConvexPolygonShape3D_p6li6")
+shape = SubResource("ConvexPolygonShape3D_m0i38")
+
+[node name="TileSlantDirt" type="MeshInstance3D" parent="."]
+mesh = SubResource("PrismMesh_vt0j1")
+surface_material_override/0 = SubResource("StandardMaterial3D_ojqmt")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="TileSlantDirt"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TileSlantDirt/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_kcity")
