@@ -1,15 +1,171 @@
-[gd_scene load_steps=5 format=3 uid="uid://sraj34la3jhg"]
+[gd_scene load_steps=26 format=3 uid="uid://sraj34la3jhg"]
 
 [ext_resource type="Script" path="res://Scripts/Liquid.gd" id="1_vj3eg"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_4kixp"]
-size = Vector3(33, 10, 33)
+size = Vector3(100, 10, 100)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yh7kv"]
-albedo_color = Color(0.890196, 0.27451, 0.27451, 1)
+[sub_resource type="Shader" id="Shader_0xi2v"]
+code = "// NOTE: Shader automatically converted from Godot Engine 4.1.1.stable's StandardMaterial3D.
+
+shader_type spatial;
+render_mode blend_add,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx,unshaded;
+uniform vec4 albedo : source_color;
+uniform sampler2D texture_albedo : source_color,filter_linear_mipmap,repeat_enable;
+uniform float point_size : hint_range(0,128);
+uniform float roughness : hint_range(0,1);
+uniform sampler2D texture_metallic : hint_default_white,filter_linear_mipmap,repeat_enable;
+uniform vec4 metallic_texture_channel;
+uniform sampler2D texture_roughness : hint_roughness_r,filter_linear_mipmap,repeat_enable;
+uniform float specular;
+uniform float metallic;
+uniform vec3 uv1_scale;
+uniform vec3 uv1_offset;
+uniform vec3 uv2_scale;
+uniform vec3 uv2_offset;
+
+uniform sampler2D noise_img;
+
+
+void vertex() {
+	UV=UV*uv1_scale.xy+uv1_offset.xy;
+}
+
+
+
+
+
+
+void fragment() {
+	vec2 base_uv = UV;
+	vec4 albedo_tex = texture(texture_albedo,base_uv);
+	ALBEDO = albedo.rgb * albedo_tex.rgb;
+	float metallic_tex = dot(texture(texture_metallic,base_uv),metallic_texture_channel);
+	METALLIC = metallic_tex * metallic;
+	vec4 roughness_texture_channel = vec4(1.0,0.0,0.0,0.0);
+	float roughness_tex = dot(texture(texture_roughness,base_uv),roughness_texture_channel);
+	ROUGHNESS = roughness_tex * roughness;
+	SPECULAR = specular;
+	
+	ALBEDO = texture(noise_img, UV - TIME / 100.0).rgb;
+}
+"
+
+[sub_resource type="Gradient" id="Gradient_que7d"]
+colors = PackedColorArray(0.455403, 1.07693e-06, 2.16588e-07, 1, 1, 0.223529, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_dqxfk"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_tkpmn"]
+width = 2000
+height = 2000
+seamless = true
+color_ramp = SubResource("Gradient_que7d")
+noise = SubResource("FastNoiseLite_dqxfk")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_f2fgo"]
+render_priority = 0
+shader = SubResource("Shader_0xi2v")
+shader_parameter/albedo = Color(0.890196, 0.27451, 0.27451, 1)
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 1.0
+shader_parameter/metallic_texture_channel = null
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.0
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/noise_img = SubResource("NoiseTexture2D_tkpmn")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ig804"]
 size = Vector3(33, 10, 33)
+
+[sub_resource type="Gradient" id="Gradient_s667j"]
+offsets = PackedFloat32Array(0, 0.520325, 1)
+colors = PackedColorArray(1, 0, 0, 1, 1, 0.309804, 0, 1, 1, 0.533333, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ixa2e"]
+gradient = SubResource("Gradient_s667j")
+
+[sub_resource type="Curve" id="Curve_u8i3x"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.210526), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_5hibn"]
+curve = SubResource("Curve_u8i3x")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_x2sco"]
+emission_shape = 3
+emission_box_extents = Vector3(16.5, 1, 16.5)
+direction = Vector3(0, 1, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 5.0
+scale_max = 3.0
+scale_curve = SubResource("CurveTexture_5hibn")
+color = Color(1, 0, 0, 1)
+color_initial_ramp = SubResource("GradientTexture1D_ixa2e")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_53tji"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_63w7d"]
+material = SubResource("StandardMaterial3D_53tji")
+radius = 0.05
+height = 0.1
+
+[sub_resource type="Gradient" id="Gradient_t6xt2"]
+offsets = PackedFloat32Array(0, 0.520325, 1)
+colors = PackedColorArray(1, 0, 0, 1, 1, 0.309804, 0, 1, 1, 0.533333, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_8irh0"]
+gradient = SubResource("Gradient_t6xt2")
+
+[sub_resource type="Curve" id="Curve_e5nsc"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.210526), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_o80k4"]
+curve = SubResource("Curve_e5nsc")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_a72ob"]
+emission_shape = 3
+emission_box_extents = Vector3(16.5, 1, 16.5)
+direction = Vector3(0, 1, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 5.0
+scale_max = 3.0
+scale_curve = SubResource("CurveTexture_o80k4")
+color = Color(1, 0.419608, 0, 1)
+color_initial_ramp = SubResource("GradientTexture1D_8irh0")
+
+[sub_resource type="Gradient" id="Gradient_pua0u"]
+offsets = PackedFloat32Array(0, 0.520325, 1)
+colors = PackedColorArray(1, 0, 0, 1, 1, 0.309804, 0, 1, 1, 0.533333, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_cvfny"]
+gradient = SubResource("Gradient_pua0u")
+
+[sub_resource type="Curve" id="Curve_pcai4"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.210526), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_txlrv"]
+curve = SubResource("Curve_pcai4")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0vvdp"]
+emission_shape = 3
+emission_box_extents = Vector3(16.5, 1, 16.5)
+direction = Vector3(0, 1, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 5.0
+scale_max = 3.0
+scale_curve = SubResource("CurveTexture_txlrv")
+color = Color(1, 0.572549, 0, 1)
+color_initial_ramp = SubResource("GradientTexture1D_cvfny")
 
 [node name="Liquid" type="Area3D"]
 collision_layer = 0
@@ -18,9 +174,33 @@ script = ExtResource("1_vj3eg")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_4kixp")
-surface_material_override/0 = SubResource("StandardMaterial3D_yh7kv")
+surface_material_override/0 = SubResource("ShaderMaterial_f2fgo")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_ig804")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.34963, 0)
+amount = 100
+lifetime = 3.0
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_x2sco")
+draw_pass_1 = SubResource("SphereMesh_63w7d")
+
+[node name="GPUParticles3D2" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.34963, 0)
+amount = 100
+lifetime = 3.0
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_a72ob")
+draw_pass_1 = SubResource("SphereMesh_63w7d")
+
+[node name="GPUParticles3D3" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.34963, 0)
+amount = 100
+lifetime = 3.0
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_0vvdp")
+draw_pass_1 = SubResource("SphereMesh_63w7d")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
