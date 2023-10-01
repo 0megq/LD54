@@ -83,7 +83,7 @@ Juliet Kozlov - Design, Moral Support, and Sound
 Anirudh Sunkad - Idea and Level Designs"
 horizontal_alignment = 1
 
-[node name="Button" type="Button" parent="CreditsPanel"]
+[node name="CloseCredits" type="Button" parent="CreditsPanel"]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 8.0
@@ -91,8 +91,46 @@ offset_right = 58.0
 offset_bottom = 39.0
 text = "Close"
 
+[node name="ControlsPanel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CloseControls" type="Button" parent="ControlsPanel"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 66.0
+offset_bottom = 47.0
+text = "Close"
+
+[node name="Label" type="Label" parent="ControlsPanel"]
+layout_mode = 1
+offset_left = 120.0
+offset_top = 154.0
+offset_right = 344.0
+offset_bottom = 284.0
+text = "WASD or arrow keys to move
+
+Press Escape to pause
+
+Get to the top to win!"
+
+[node name="CheckButton" type="CheckButton" parent="ControlsPanel"]
+layout_mode = 0
+offset_left = 115.0
+offset_top = 93.0
+offset_right = 253.0
+offset_bottom = 124.0
+focus_mode = 0
+text = "Mute Audio"
+
 [connection signal="pressed" from="VBoxContainer/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="VBoxContainer/Controls" to="." method="_on_controls_pressed"]
 [connection signal="pressed" from="VBoxContainer/Credits" to="." method="_on_credits_pressed"]
 [connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]
-[connection signal="pressed" from="CreditsPanel/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="CreditsPanel/CloseCredits" to="." method="_on_close_credits_pressed"]
+[connection signal="pressed" from="ControlsPanel/CloseControls" to="." method="_on_close_controls_pressed"]
+[connection signal="toggled" from="ControlsPanel/CheckButton" to="." method="_on_check_button_toggled"]
