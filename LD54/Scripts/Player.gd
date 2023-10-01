@@ -22,17 +22,19 @@ var speed: float
 
 
 func _physics_process(delta: float) -> void:
-	$MeshInstance3D/RayCast3D.enabled = true
-	if $MeshInstance3D/RayCast3D.is_colliding():
+	$PlayerModel/RayCast3D.enabled = true
+	if $PlayerModel/RayCast3D.is_colliding():
 		edge_detected.emit()
-		$MeshInstance3D/RayCast3D.enabled = false
+		$PlayerModel/RayCast3D.enabled = false
 	
 	var h_input = Input.get_axis("left", "right")
 	
-	$MeshInstance3D.scale.x = h_input if h_input != 0 else $MeshInstance3D.scale.x
+	$PlayerModel.scale.z = h_input / 2 if h_input != 0 else $PlayerModel.scale.z
 	
 	#Deacceleration
-	if h_input == 0 and abs(speed) > 0.1:
+	if h_input == 0 and speed != 0:
+		if sign(speed - acceleration * delta * sign(speed)) != sign(speed):
+			speed = 0
 		speed -= acceleration * delta * sign(speed)
 	
 	#Acceleration

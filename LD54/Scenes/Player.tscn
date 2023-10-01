@@ -1,49 +1,40 @@
-[gd_scene load_steps=7 format=3 uid="uid://bepjsqbqcn4uu"]
+[gd_scene load_steps=4 format=3 uid="uid://bepjsqbqcn4uu"]
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_8wmxw"]
+[ext_resource type="PackedScene" uid="uid://d05v5vhaq8ij6" path="res://Player.blend" id="2_clt2u"]
 
-[sub_resource type="SphereMesh" id="SphereMesh_o5s2h"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e3633"]
-albedo_color = Color(0.14902, 0, 1, 1)
-emission_enabled = true
-
-[sub_resource type="BoxMesh" id="BoxMesh_7f63i"]
-size = Vector3(0.3, 0.2, 0.5)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k8o5l"]
-albedo_color = Color(0, 0, 0, 1)
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_4ac43"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_nh6nk"]
+size = Vector3(0.5, 0.9, 0.5)
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2
 wall_min_slide_angle = 0.785398
 script = ExtResource("1_8wmxw")
-jump_height = 2.0
+max_speed = 8.0
+jump_height = 3.0
 jump_duration = 0.3
 fall_duration = 0.3
 max_fall_speed = 100.0
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("SphereMesh_o5s2h")
-surface_material_override/0 = SubResource("StandardMaterial3D_e3633")
+[node name="PlayerModel" parent="." instance=ExtResource("2_clt2u")]
+transform = Transform3D(-2.18557e-08, 0, 0.5, 0, 0.5, 0, -0.5, 0, -2.18557e-08, 0, 0, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.406892, 0.227306, 0)
-mesh = SubResource("BoxMesh_7f63i")
-surface_material_override/0 = SubResource("StandardMaterial3D_k8o5l")
-
-[node name="RayCast3D" type="RayCast3D" parent="MeshInstance3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
-target_position = Vector3(0.05, 0, 0)
+[node name="RayCast3D" type="RayCast3D" parent="PlayerModel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0106e-08, 0, 0.917518)
+target_position = Vector3(0, 0, 0.1)
 collision_mask = 2
 hit_from_inside = true
 collide_with_areas = true
 collide_with_bodies = false
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("SphereShape3D_4ac43")
+[node name="SpotLight3D" type="SpotLight3D" parent="PlayerModel"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+light_color = Color(1, 0.803922, 0.470588, 1)
+light_energy = 10.0
+spot_range = 49.1806
 
-[node name="OmniLight3D" type="OmniLight3D" parent="."]
-omni_range = 10.0
+[node name="OmniLight3D" type="OmniLight3D" parent="PlayerModel"]
+light_color = Color(1, 0.803922, 0.470588, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_nh6nk")
