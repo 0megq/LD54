@@ -27,6 +27,6 @@ func _on_player_edge_detected() -> void:
 	await tween.finished
 	get_tree().paused = false
 	
-	rotation = %Player.rotation
+	rotation.y = %Player.rotation.y - PI / 2
 
 	

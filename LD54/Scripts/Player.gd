@@ -26,16 +26,28 @@ var coyote_time_length: float = 0.1
 var jump_was_pressed: bool = false
 var remember_jump_length: float = 0.1
 
-
 func _physics_process(delta: float) -> void:
+	detect_edge()
+	look()
+	move(delta)
+	
+	
+func look() -> void:
+	if Input.get_axis("left", "right") == 0:
+		return
+	
+	$PlayerModel.rotation.y = PI if Input.get_axis("left", "right") < 0 else 0
+	
+	
+func detect_edge() -> void:
 	$PlayerModel/RayCast3D.enabled = true
 	if $PlayerModel/RayCast3D.is_colliding():
 		edge_detected.emit()
 		$PlayerModel/RayCast3D.enabled = false
-	
-	var h_input = Input.get_axis("left", "right")
-	
-	$PlayerModel.scale.z = h_input / 2 if h_input != 0 else $PlayerModel.scale.z
+
+
+func move(delta: float) -> void:
+	var h_input = sign(Input.get_axis("left", "right"))
 	
 	#Deacceleration
 	if h_input == 0 and speed != 0:
@@ -72,7 +84,6 @@ func _physics_process(delta: float) -> void:
 	apply_gravity(delta)
 		
 	move_and_slide()
-
 
 func remember_jump_time():
 	await get_tree().create_timer(remember_jump_length).timeout
