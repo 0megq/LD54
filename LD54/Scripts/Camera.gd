@@ -9,8 +9,8 @@ func _ready() -> void:
 	set_physics_process(true)
 	
 	
-#func _physics_process(delta: float) -> void:
-#	position.y += delta * 2 / 3
+func _physics_process(delta: float) -> void:
+	position.y += delta * 2 / 3
 	
 
 func _on_player_edge_detected() -> void:

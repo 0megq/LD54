@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://dcbyp14r2e7wr"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_srm25"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vffaj"]
+albedo_color = Color(0.470588, 0.254902, 0.054902, 1)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_p6li6"]
+points = PackedVector3Array(0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5)
+
+[node name="TileBase" type="Node3D"]
+
+[node name="TileDirt" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_srm25")
+surface_material_override/0 = SubResource("StandardMaterial3D_vffaj")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="TileDirt"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TileDirt/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_p6li6")

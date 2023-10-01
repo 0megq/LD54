@@ -3,13 +3,13 @@
 [ext_resource type="Script" path="res://Scripts/Liquid.gd" id="1_vj3eg"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_4kixp"]
-size = Vector3(11, 10, 11)
+size = Vector3(33, 10, 33)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yh7kv"]
 albedo_color = Color(0.890196, 0.27451, 0.27451, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ig804"]
-size = Vector3(11, 10, 11)
+size = Vector3(33, 10, 33)
 
 [node name="Liquid" type="Area3D"]
 collision_layer = 0
