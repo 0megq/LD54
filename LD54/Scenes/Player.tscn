@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bepjsqbqcn4uu"]
+[gd_scene load_steps=6 format=3 uid="uid://bepjsqbqcn4uu"]
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_8wmxw"]
 [ext_resource type="PackedScene" uid="uid://d05v5vhaq8ij6" path="res://Player.blend" id="2_clt2u"]
+[ext_resource type="AudioStream" uid="uid://qe1q7gvugfjb" path="res://Sound/Jump.wav" id="3_djnno"]
+[ext_resource type="AudioStream" uid="uid://coej5pbw2nvby" path="res://Sound/Walking1.wav" id="4_x833o"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_0jh6n"]
 height = 0.799796
@@ -42,3 +44,12 @@ light_color = Color(1, 0.803922, 0.470588, 1)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.148708, 0)
 shape = SubResource("CylinderShape3D_0jh6n")
+
+[node name="JumpSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_djnno")
+volume_db = -8.0
+pitch_scale = 0.8
+
+[node name="WalkSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_x833o")
+volume_db = 4.0

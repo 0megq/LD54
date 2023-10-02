@@ -31,6 +31,10 @@ func _physics_process(delta: float) -> void:
 	look()
 	move(delta)
 	
+	if is_on_floor() and velocity.x != 0 and !$WalkSound.playing:
+		$WalkSound.stream = load("res://Sound/Walking" + str(randi_range(1, 4)) +".wav")
+		$WalkSound.play()
+		
 	
 func look() -> void:
 	if Input.get_axis("left", "right") == 0:
@@ -96,6 +100,7 @@ func coyote_time() -> void:
 
 
 func jump() -> void:
+	$JumpSound.play()
 	velocity.y = jump_velocity
 
 	

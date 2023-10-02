@@ -1,6 +1,7 @@
-[gd_scene load_steps=17 format=3 uid="uid://sraj34la3jhg"]
+[gd_scene load_steps=18 format=3 uid="uid://sraj34la3jhg"]
 
 [ext_resource type="Script" path="res://Scripts/Liquid.gd" id="1_vj3eg"]
+[ext_resource type="AudioStream" uid="uid://b2dwqjv1dh41t" path="res://Sound/Lava.wav" id="2_4gyhx"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_4kixp"]
 size = Vector3(100, 10, 100)
@@ -178,5 +179,11 @@ scale_amount_max = 3.0
 scale_amount_curve = SubResource("Curve_pcai4")
 color = Color(1, 0.572549, 0, 1)
 color_initial_ramp = SubResource("Gradient_pua0u")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_4gyhx")
+volume_db = 50.0
+max_db = 6.0
+autoplay = true
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

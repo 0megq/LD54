@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://cjdgct24c3sh5"]
+[gd_scene load_steps=14 format=3 uid="uid://cjdgct24c3sh5"]
 
 [ext_resource type="Script" path="res://Scenes/World.gd" id="1_ie1ga"]
 [ext_resource type="PackedScene" uid="uid://sraj34la3jhg" path="res://Scenes/Liquid.tscn" id="1_impl2"]
 [ext_resource type="PackedScene" uid="uid://bepjsqbqcn4uu" path="res://Scenes/Player.tscn" id="2_2hp72"]
 [ext_resource type="PackedScene" uid="uid://y6m82jjdd0q6" path="res://Scenes/GridMap.tscn" id="3_ugg7v"]
 [ext_resource type="Script" path="res://Scripts/Camera.gd" id="4_osair"]
+[ext_resource type="AudioStream" uid="uid://bmk3bf7ycflfs" path="res://Sound/CameraWoosh.wav" id="6_dwjdw"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wedd0"]
 size = Vector3(1, 25, 33.0451)
@@ -53,6 +54,10 @@ unique_name_in_owner = true
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6.26684, 3.50088, 7.65017)
 wall_min_slide_angle = 1.5708
 
+[node name="AudioListener3D" type="AudioListener3D" parent="Player"]
+transform = Transform3D(-4.37114e-08, 0.106264, -0.994338, 0, 0.994338, 0.106264, 1, 4.64495e-09, -4.34639e-08, -16.7153, 2.02633, 7.12425)
+current = true
+
 [node name="GridMap" parent="." instance=ExtResource("3_ugg7v")]
 cell_center_x = true
 cell_center_z = true
@@ -73,6 +78,10 @@ size = 20.9639
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Camera/Camera3D"]
 light_energy = 0.3
+
+[node name="Whoosh" type="AudioStreamPlayer" parent="Camera"]
+stream = ExtResource("6_dwjdw")
+volume_db = -6.0
 
 [node name="CameraBoundary" type="Area3D" parent="."]
 collision_layer = 2
