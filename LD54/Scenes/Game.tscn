@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://oby5swxde0aw"]
+[gd_scene load_steps=5 format=3 uid="uid://oby5swxde0aw"]
 
 [ext_resource type="PackedScene" uid="uid://cjdgct24c3sh5" path="res://Scenes/World.tscn" id="1_4ljtm"]
 [ext_resource type="Script" path="res://Scenes/Game.gd" id="1_sq4kl"]
 [ext_resource type="PackedScene" uid="uid://c3oq13hnoqwc5" path="res://Scenes/Menus.tscn" id="2_of52k"]
+[ext_resource type="AudioStream" uid="uid://dijkto0n6snqk" path="res://Sound/Music.mp3" id="4_psetr"]
 
 [node name="Game" type="Node"]
 process_mode = 3
@@ -12,3 +13,7 @@ script = ExtResource("1_sq4kl")
 process_mode = 1
 
 [node name="Menus" parent="." instance=ExtResource("2_of52k")]
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_psetr")
+autoplay = true
