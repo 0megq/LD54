@@ -80,7 +80,9 @@ Charles Tian - Design and Moral Support
 
 Juliet Kozlov - Design, Moral Support, and Sound
 
-Anirudh Sunkad - Idea and Level Designs"
+Anirudh Sunkad - Idea and Level Designs
+
+John Yang - Music"
 horizontal_alignment = 1
 
 [node name="CloseCredits" type="Button" parent="CreditsPanel"]
