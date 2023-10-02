@@ -27,7 +27,7 @@ func _physics_process(delta: float) -> void:
 	
 
 func _on_player_edge_detected() -> void:
-	$Whoosh.play(0.6)
+	$Whoosh.play(0.8)
 	%Player.run_direction = %Player.run_direction.rotated(Vector3.UP, PI/2 * sign(%Player.speed))
 	%Player.rotate_y(PI/2 * sign(%Player.speed))
 	
